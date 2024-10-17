@@ -2,11 +2,21 @@ package ru.mpei;
 
 public class Main {
     public static void main(String[] args) {
-        Container c = new Container();
-        if (c instanceof Container){
-            System.out.println(true);
-        }
-        String[] s = new String[5];
-        System.out.println(s.getClass());
+        TripletDeque<String> td = new TripletDeque<>();
+        td.addFirst("Komil");
+        td.addFirst("Komil");
+        td.addFirst("Komil");
+        td.addFirst("Komil");
+        td.addLast("Dilovar");
+        td.addLast("Dilovar");
+        td.addLast("Dilovar");
+        td.addLast("Dilovar");
+        td.printDeque();
+        var komil = td.removeFirstOccurrence("Komil");
+        td.printDeque();
+        System.out.println(komil);
+
+
+
     }
 }

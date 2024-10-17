@@ -66,4 +66,8 @@ public class Container<T> {
         }
         return false;
     }
+
+    public boolean isEmpty(){
+        return container[0] == null;
+    }
 }
