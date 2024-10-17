@@ -5,9 +5,9 @@ import java.util.Deque;
 import java.util.Iterator;
 
 @SuppressWarnings("ALL")
-public class TripletDeque<T> implements Containerable, Deque {
-    private Container<T> last;
+public class TripletDeque<T> implements Containerable, Deque<T>{
     private Container<T> first;
+    private Container<T> last;
     private int size = 1000;
     private int length;
 
@@ -25,25 +25,24 @@ public class TripletDeque<T> implements Containerable, Deque {
 
     @Override
     public void addFirst(Object o) {
-//        if (first != null && !first.getContainer().getClass().equals(o.getClass())){
-//            return;
-//        }
+        if (first != null && !first.getContainer()[4].getClass().equals(o.getClass())){
+            return;
+        } else if (o == null){
+            throw new NullPointerException();
+        }
 
         if (this.first == null && this.last == null) {
-            this.first = new Container<T>();
-            this.last = new Container<T>();
-            this.first.setNext(last);
-            this.last.setPrev(first);
-            length += 2;
+            this.first = this.last =  new Container<T>();
+            length += 1;
         }
         if (first.hasEmptyPlace()){
-            first.addToContainer((T) o);
+            first.addToContainerToRight((T) o);
         } else {
-            Container<T> newLastContainer = new Container<>();
-            newLastContainer.setNext(this.first);
-            this.first.setPrev(newLastContainer);
-            first = newLastContainer;
-            first.addToContainer((T) o);
+            Container<T> newContainer = new Container<>();
+            newContainer.setNext(this.first);
+            this.first.setPrev(newContainer);
+            first = newContainer;
+            first.addToContainerToRight((T) o);
             length++;
         }
 
@@ -51,65 +50,82 @@ public class TripletDeque<T> implements Containerable, Deque {
 
     @Override
     public void addLast(Object o) {
-//        if (first != null && !first.getContainer().getClass().equals(o.getClass())){
-//            return;
-//        }
-        if (this.first == null && this.last == null) {
-            this.first = new Container<T>();
-            this.last = new Container<T>();
-            this.first.setNext(last);
-            this.last.setPrev(first);
-            length += 2;
+        if (first != null && !first.getContainer()[4].getClass().equals(o.getClass())){
+            return;
+        } else if (o == null){
+            throw new NullPointerException();
         }
-//        if (this.last == null){
-//            this.last = new Container<T>();
-//            this.first.setNext(last);
-//            this.last.setPrev(first);
-//            length++;
-//        }
+
+        if (this.first == null && this.last == null) {
+            this.first = this.last = new Container<T>();
+            length++;
+        }
+
         if (last.hasEmptyPlace()){
-            last.addToContainer((T) o);
+            last.addToContainerToLeft((T) o);
         } else {
             Container<T> newLastContainer = new Container<>();
             this.last.setNext(newLastContainer);
             newLastContainer.setPrev(this.last);
             this.last = newLastContainer;
-            this.last.addToContainer((T) o);
+            this.last.addToContainerToLeft((T) o);
         }
     }
 
     @Override
     public boolean offerFirst(Object o) {
-        addFirst(o);
-        for (int i = 0; i < this.first.getSize(); i++){
-            if (this.first.getContainer()[i].equals((T) o)){
-                return true;
-            }
+        if (first != null && !first.getContainer()[4].getClass().equals(o.getClass())){
+            return false;
+        } else if (o == null){
+            throw new NullPointerException();
+        }
+
+        if (this.first == null && this.last == null) {
+            this.first = this.last =  new Container<T>();
+            length += 1;
+        }
+        if (first.hasEmptyPlace()){
+            first.addToContainerToRight((T) o);
+            return true;
         }
         return false;
     }
 
     @Override
     public boolean offerLast(Object o) {
-        addLast(o);
-        for (int i = 0; i < this.last.getSize(); i++){
-            if (this.last.getContainer()[i].equals((T) o)){
-                return true;
-            }
+        if (first != null && !first.getContainer()[4].getClass().equals(o.getClass())){
+            return false;
+        } else if (o == null){
+            throw new NullPointerException();
+        }
+
+        if (this.first == null && this.last == null) {
+            this.first = this.last =  new Container<T>();
+            length += 1;
+        }
+        if (last.hasEmptyPlace()){
+            last.addToContainerToLeft((T) o);
+            return true;
         }
         return false;
     }
 
     @Override
     public T removeFirst() {
-        removeFromEnd(this.first);
-        return (T) getLastElementFromContainer(this.first);
+        if (this.first.isEmpty()){
+            this.first.getNext().setPrev(null);
+            this.first = this.first.getNext();
+        }
+        return removeFromLeft(this.first);
     }
 
     @Override
     public T removeLast() {
-        removeFromEnd(this.last);
-        return (T) getLastElementFromContainer(this.last);
+        if (this.last.isEmpty()){
+            this.last.getPrev().setNext(null);
+            this.last = this.last.getPrev();
+        }
+       return removeFromRight(this.last);
     }
 
     @Override
@@ -144,41 +160,42 @@ public class TripletDeque<T> implements Containerable, Deque {
 
     @Override
     public boolean removeFirstOccurrence(Object o) {
-        return removeFromMiddle(this.first, o);
+//        return removeFromMiddle(this.first, o);
+        return false;
     }
 
     @Override
     public boolean removeLastOccurrence(Object o) {
-        return removeFromMiddle(this.last, o);
-    }
-
-    @Override
-    public boolean add(Object o) {
         return false;
     }
 
     @Override
-    public boolean offer(Object o) {
+    public boolean add(T t) {
         return false;
     }
 
     @Override
-    public Object remove() {
+    public boolean offer(T t) {
+        return false;
+    }
+
+    @Override
+    public T remove() {
         return null;
     }
 
     @Override
-    public Object poll() {
+    public T poll() {
         return null;
     }
 
     @Override
-    public Object element() {
+    public T element() {
         return null;
     }
 
     @Override
-    public Object peek() {
+    public T peek() {
         return null;
     }
 
@@ -208,7 +225,7 @@ public class TripletDeque<T> implements Containerable, Deque {
     }
 
     @Override
-    public Object pop() {
+    public T pop() {
         return null;
     }
 
@@ -224,9 +241,6 @@ public class TripletDeque<T> implements Containerable, Deque {
 
     @Override
     public boolean contains(Object o) {
-        if (o instanceof Container){
-
-        }
         return false;
     }
 
@@ -257,7 +271,7 @@ public class TripletDeque<T> implements Containerable, Deque {
 
     @Override
     public Iterator descendingIterator() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 //    private T removeLastElementFromContainer(Container<T> t){
@@ -279,9 +293,7 @@ public class TripletDeque<T> implements Containerable, Deque {
 
 
     private T getLastElementFromContainer(Container<T> t){
-        if (t.isEmpty()){
-            throw new ContainerEmptyException();
-        }
+
         T lastElementOfContainer = t.getContainer()[t.getSize() - 1];
         if (lastElementOfContainer != null){
             return (T) lastElementOfContainer;
@@ -296,55 +308,79 @@ public class TripletDeque<T> implements Containerable, Deque {
         return null;
     }
 
-    private void removeFromEnd(Container<T> t){
-        if (t.isEmpty()){
-            throw new ContainerEmptyException();
-        }
+    private T removeFromRight(Container<T> t){
         if (t.getContainer()[t.getSize() - 1] != null){
+            T lastElement = t.getContainer()[t.getSize() - 1];
             t.getContainer()[t.getSize() - 1] = null;
+            return lastElement;
         } else {
             for (int i = 0; i < t.getSize(); i++){
                 if (t.getContainer()[i] == null){
-                    t.getContainer()[i - 1] = null;
+                    T returnValue = t.getContainer()[i - 1];
+                    t.getContainer()[i-1] = null;
+                    return returnValue;
                 }
             }
         }
+        return null;
     }
 
-    private boolean removeFromMiddle(Container<T> t, Object elementToRemove){
-        if (elementToRemove != null){
-            elementToRemove = (T)elementToRemove;
-        }
-
-        if (t.isEmpty()){
-            return false;
+    private T removeFromLeft(Container<T> t){
+        if (t.getContainer()[0] != null){
+            T lastElement = t.getContainer()[0];
+            t.getContainer()[0] = null;
+            return lastElement;
         } else {
-            if (elementToRemove.equals(t.getContainer()[t.getSize() - 1])){
-                t.getContainer()[t.getSize() - 1] = null;
-                return true;
-            } else {
-                for (int i = 0; i < t.getSize(); i++) {
-                    if (elementToRemove.equals(t.getContainer()[i])) {
-                        int la = 0;
-                        for (int j = i; t.getContainer()[j] != null; j++, la++) {
-                            t.getContainer()[j] = t.getContainer()[j + 1];
-                        }
-                        t.getContainer()[la - 1] = null;
-                        return true;
-                    }
+            for (int i = t.getSize() - 1; i >= 0; i--){
+                if (t.getContainer()[i] == null){
+                    T returnValue = t.getContainer()[i+1];
+                    t.getContainer()[i+1] = null;
+                    return returnValue;
                 }
             }
         }
-        return false;
+        return null;
     }
+
+//    private boolean removeFromMiddle(Container<T> t, Object elementToRemove){
+//
+//        if (elementToRemove != null){
+//            elementToRemove = (T)elementToRemove;
+//        }
+//
+//        if (t.isEmpty()){
+//            return false;
+//        } else {
+//            if (elementToRemove.equals(t.getContainer()[t.getSize() - 1])){
+//                t.getContainer()[t.getSize() - 1] = null;
+//                return true;
+//            } else {
+//                for (int i = 0; i < t.getSize(); i++) {
+//                    if (elementToRemove.equals(t.getContainer()[i])) {
+//                        int la = 0;
+//                        for (int j = i; t.getContainer()[j] != null; j++, la++) {
+//                            if (j > 4){
+//                                break;
+//                            }
+////                            t.getContainer()[j] = t.getContainer()[j + 1];
+//                        }
+//                        t.getContainer()[la - 1] = null;
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     public void printDeque() {
        Container<T> node = first;
        while (node != null) {
+           System.out.print("[");
            for (int i = 0; i < 5; i++) {
                System.out.print(node.getContainer()[i] + " ");
            }
-           System.out.println();
+           System.out.print("] ");
            node = node.getNext();
        }
     }

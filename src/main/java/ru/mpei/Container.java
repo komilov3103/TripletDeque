@@ -57,7 +57,7 @@ public class Container<T> {
         return false;
     }
 
-    public boolean addToContainer(T t){
+    public boolean addToContainerToLeft(T t){
         for (int i = 0; i < container.length; i++){
             if (container[i] == null){
                 container[i] = t;
@@ -67,7 +67,22 @@ public class Container<T> {
         return false;
     }
 
+    public boolean addToContainerToRight(T t){
+        for (int i = container.length - 1; i >= 0; i--){
+            if (container[i] == null){
+                container[i] = t;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isEmpty(){
-        return container[0] == null;
+        for (int i = 0; i < container.length; i++){
+            if (container[i] != null){
+                return false;
+            }
+        }
+        return true;
     }
 }

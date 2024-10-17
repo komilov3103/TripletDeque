@@ -7,4 +7,5 @@ public interface Containerable{
 
     Object[] getContainerByIndex(int cIndex);
 
+    void addFirst(Object t);
 }
