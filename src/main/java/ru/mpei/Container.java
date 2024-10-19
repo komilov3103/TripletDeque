@@ -1,5 +1,8 @@
 package ru.mpei;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 @SuppressWarnings("ALL")
 public class Container<T> {
     private Container<T> next = null;
@@ -84,5 +87,9 @@ public class Container<T> {
             }
         }
         return true;
+    }
+
+    public boolean hasNext(){
+        return this.next != null;
     }
 }

@@ -1,30 +1,17 @@
 package ru.mpei;
 
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
         TripletDeque<String> td = new TripletDeque<>();
-        td.addFirst("one");
-        td.addFirst("two");
-        td.addLast("three");
-        td.addLast("three");
-        td.addLast("three");
-        td.addLast("five");
-        td.addFirst("one");
-        td.addFirst("two");
-        td.addLast("five");
-        String s = td.removeFirst();
-        String s1 = td.removeLast();
-        td.removeFirst();
-        td.removeFirst();
-        td.removeFirst();
+        for (int i=0; i < 15 ;i++){
+            td.addLast("n_"+i);
+        }
+
+        System.out.println(td.remove("n_3"));
+
         td.printDeque();
-        System.out.println();
-        System.out.println(s);
-        System.out.println(s1);
-
-
-
-
 
     }
 }
