@@ -1,9 +1,6 @@
 package ru.mpei;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 
-@SuppressWarnings("ALL")
 public class Container<T> {
     private Container<T> next = null;
     private Container<T> prev = null;

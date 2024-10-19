@@ -2,7 +2,7 @@ package ru.mpei;
 
 import java.util.*;
 
-@SuppressWarnings("ALL")
+
 public class TripletDeque<T> implements Containerable, Deque<T> {
     private Container<T> firstContainer;
     private Container<T> lastContainer;
