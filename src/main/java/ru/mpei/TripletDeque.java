@@ -17,16 +17,6 @@ public class TripletDeque<T> implements Containerable, Deque<T> {
 
 
     @Override
-    public Object[] getContainerByIndex(int cIndex) {
-        Container<T> checker = this.firstContainer;
-        while (checker.hasNext() && cIndex > 0){
-            checker = checker.getNext();
-            cIndex--;
-        }
-        return checker.getContainer();
-    }
-
-    @Override
     public void addFirst(Object o) {
         if (firstContainer != null && firstContainer.getContainer()[4] != null && !firstContainer.getContainer()[4].getClass().equals(o.getClass())){
             return;
@@ -201,6 +191,7 @@ public class TripletDeque<T> implements Containerable, Deque<T> {
                     break;
                 }
             }
+
             if (result == true){
                 break;
             }
@@ -342,13 +333,9 @@ public class TripletDeque<T> implements Containerable, Deque<T> {
             throw new ContainerEmptyException();
         }
         boolean result = removeFirstOccurrence(o);
-        Container<T> checker = this.firstContainer;
-        while (checker != null && !checker.equals(this.lastContainer)){
-            if (checker.isEmpty()){
-                checker.setNext(checker.getPrev());
-                checker.setPrev(checker.getNext());
-            }
-            checker = checker.getNext();
+        if (this.firstContainer.isEmpty() && firstContainer != null){
+            this.firstContainer.getNext().setPrev(null);
+            this.firstContainer = this.firstContainer.getNext();
         }
         return result;
     }
@@ -523,16 +510,18 @@ public class TripletDeque<T> implements Containerable, Deque<T> {
         }
     }
 
-    public void printDeque() {
-       Container<T> node = firstContainer;
-       while (node != null) {
-           System.out.print("[");
-           for (int i = 0; i < 5; i++) {
-               System.out.print(node.getContainer()[i] + " ");
-           }
-           System.out.print("] ");
-           node = node.getNext();
-       }
+    @Override
+    public Object[] getContainerByIndex(int cIndex) {
+        Container<T> checker = this.firstContainer;
+        while (cIndex > 0){
+            checker = checker.getNext();
+            cIndex--;
+        }
+        if (checker != null && checker.getContainer() != null){
+            return checker.getContainer();
+        } else {
+            return null;
+        }
     }
 
     public Container<T> getFirstContainer() {

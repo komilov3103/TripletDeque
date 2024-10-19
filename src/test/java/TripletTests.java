@@ -277,11 +277,12 @@ public class TripletTests {
         tQueue.remove("8");
         tQueue.remove("9");
 
+
         cntr = cQueue.getContainerByIndex(0);
         cntr1 = cQueue.getContainerByIndex(1);
         cntr2 = cQueue.getContainerByIndex(2);
 
-        Assertions.assertTrue(cntr!=null && cntr1 != null && cntr2 ==null);
+        Assertions.assertTrue(cntr!=null && cntr1 != null && cntr2 == null);
 
     }
 
